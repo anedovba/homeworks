@@ -9,20 +9,16 @@ $fileText=file_get_contents('file.txt');
 
 function words($fileText, $num)
 {
-    $arr = explode(' ', $fileText);
-    $arr2=[];
-
-    foreach ($arr as $v) {
-
-        if (strlen($v) < $num) {
-
-            $arr2[]=$v;
+    $arr = (explode(' ', $fileText));
+    foreach ($arr as $k => $v) {
+        if (mb_strlen($v,'UTF-8') > $num) {
+            unset($arr[$k]);
         }
     }
-    //print_r($arr2);
-    file_put_contents('file.txt',implode(" ", $arr2));
+    //print_r($arr);
+    file_put_contents('new_file.txt', implode(' ',$arr));
     echo "Файл перезаписан, слова с длиной больше $num символов удалены";
 }
+if($_POST){
 words($fileText,$num);
-//echo $fileText=file_get_contents('file.txt');
-
+}

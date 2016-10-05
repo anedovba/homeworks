@@ -6,21 +6,20 @@
 include 'check_post_get.php';
 
 $a=explode(' ',noNotice('post', 'a'));
+if($_POST) {
+    function top3($a)
+    {
 
-function top3($a){
-
-    foreach ($a as $key => $item){
-       $item=strlen($item);
-
+        foreach ($a as $key => $item) {
+            $item = mb_strlen($item);
+            //echo $item.'<br>';
+        }
+        arsort($a);
+        $temp[] = reset($a);
+        $temp[] = next($a);
+        $temp[] = next($a);
+        return $temp;
     }
-    arsort($a);
-    $temp[]=reset($a);
-    $temp[]=next($a);
-    $temp[]=next($a);
 
-
-
-    return $temp;
+    print_r(top3($a));
 }
-
-print_r(top3($a));

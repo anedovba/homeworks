@@ -32,4 +32,8 @@ function find_file($dir, $word){
     }
     return $res;
 }
-my_print(find_file($dir,$word));
+
+if ($_POST){
+    my_print(find_file($dir,$word));
+}
+

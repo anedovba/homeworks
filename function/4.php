@@ -5,6 +5,7 @@
 <?php
 include 'check_post_get.php';
 include 'my_print.php';
+
 $dir=noNotice('post', 'a');
 
 function cur_dir($dir){
@@ -13,4 +14,7 @@ function cur_dir($dir){
     }
     return scandir($dir);
 }
-my_print(cur_dir($dir));
+if($_POST){
+    my_print(cur_dir($dir));
+}
+

@@ -1,1 +1,2 @@
-a:3:{s:4:"name";s:4:"Anna";s:7:"comment";s:3:"uuu";s:9:"timestamp";i:1475588158;}
+a:4:{s:8:"username";s:7:"alexicq";s:5:"email";s:13:"lex@gmail.com";s:7:"message";s:8:"ho ho ho";s:8:"datetime";s:19:"2016-10-04 19:03:31";}
+a:4:{s:8:"username";s:5:"Maria";s:5:"email";s:15:"maria@gmail.com";s:7:"message";s:8:"o o o o ";s:8:"datetime";s:19:"2016-10-04 19:22:49";}
