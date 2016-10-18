@@ -80,7 +80,7 @@
 //            die('move upload fail');
 //        }
 
-require '../comments_form/functions.php';
+require 'functions.php';
 
 
 if (!file_exists('uploads')) {
