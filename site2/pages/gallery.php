@@ -183,7 +183,9 @@ array_shift($files);
 <h2>Gallery</h2>
 <hr>
 <form 	action="" method='post' enctype="multipart/form-data" class="form-group">
-    <input type="file" name="attachment[]" multiple class="" > <br>
+
+    <input type="file" name="attachment[]" multiple class="form-control-file" > <br>
+
     <br>
     <input type="text" name="album" class="form-control-text"> Укажите название альбома <br>
     <br>

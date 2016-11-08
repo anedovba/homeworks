@@ -1,4 +1,18 @@
 <?php
+
+//$plain_password='1234';
+//$salt='This is some string';
+//
+//echo $pass=md5(md5($salt).$plain_password);
+
+
+$salt='This is some string';
+$link=mysqli_connect(
+    "127.0.0.1",
+    "root",
+    "",
+    "mvc_group_609"
+);
 session_start();
 /**
  * Created by PhpStorm.

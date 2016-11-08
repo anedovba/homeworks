@@ -12,9 +12,9 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">Home</a></li>
-            <li><a href="/index.php?page=comments">Comments</a></li>
+            <li><a href="/index.php?page=books">Books</a></li>
             <li><a href="/index.php?page=gallery">Gallery</a></li>
-
+            <li><a href="/index.php?page=comments">Comments</a></li>
             <li>
               <?php if(isset($_SESSION['user'])):?>
               <a href="/index.php?page=logout">Logout</a>
