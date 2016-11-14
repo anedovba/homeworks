@@ -29,7 +29,6 @@ if(get('action')=='delete' && get('id') ){
            <th>Title</th>
            <th>Price</th>
            <th>Actions</th>
-
        </tr>
    </thread>
 <tbody>

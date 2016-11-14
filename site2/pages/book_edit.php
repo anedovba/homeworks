@@ -12,7 +12,7 @@ if($id===null)
 {
     //вставляем новую книгу
     echo 'new';
-    $book=array('id'=>null,'title'=>null, 'price'=>null, 'description'=>null, 'is_active'=>null);
+    $book=array('id'=>null,'title'=>null, 'price'=>null, 'description'=>null, 'is_active'=>null, 'style_id'=>null);
 }
 else
 {
@@ -21,6 +21,7 @@ else
 
     $book=findBookById($id);
 }
+$styles=getStyles();
 
 if(requestIsPost()){
 
@@ -32,9 +33,12 @@ if(requestIsPost()){
 
        }else $is_act=0;
 
-       $book=array('title'=>post('title'), 'price'=>post('price'), 'description'=>post('description'), 'is_active'=>$is_act);
-//       dd($book);
-//       die;
+        $styleId=getStyleId(post('styles'));
+
+       $book=array('title'=>post('title'), 'price'=>post('price'), 'description'=>post('description'), 'is_active'=>$is_act, 'style_id'=>$styleId['id']);
+
+      //dd($book);
+      //die;
          $res=insertBook($book);
     if ($res===false){
         setFlash('Error');
@@ -49,8 +53,8 @@ if(requestIsPost()){
             $is_act=1;
 
         }else $is_act=0;
-
-        $book=array('title'=>post('title'), 'price'=>post('price'), 'description'=>post('description'), 'is_active'=>$is_act);
+        $styleId=getStyleId(post('styles'));
+        $book=array('title'=>post('title'), 'price'=>post('price'), 'description'=>post('description'), 'is_active'=>$is_act, 'style_id'=>$styleId['id']);
 //       dd($book);
 //        var_dump(post('id')) ;
 //       die;
@@ -74,7 +78,13 @@ if(requestIsPost()){
 
     Title: <input type="text" name="title" class="form-control" value="<?=$book['title']?>"> <br>
     Price: <input type="text" name="price" class="form-control" value="<?=$book['price']?>"> <br>
-    Description: <textarea name="description" id="" cols="30" rows="10" class="form-control" value=""><?=$book['description']?></textarea><br>
+    Description: <textarea name="description" id="" cols="30" rows="5" class="form-control" value=""><?=$book['description']?></textarea><br>
+    Style: <select name='styles' size="1" class="form-control">
+        <?php foreach ($styles as $style):?>
+            <option><?=$style['name']?></option>
+        <?php endforeach;?>
+    </select>
+    <br>
     Is active: <input type="checkbox" name="is_active" class="checkbox" <?= $book['is_active']?'checked':''?>><br><br>
     <button class="btn btn-default" type="submit" name="submit">GO</button>
 </form>

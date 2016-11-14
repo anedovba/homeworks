@@ -47,8 +47,13 @@ function removeBookById($id){
  */
 function insertBook($book){
     global $link;
+    $t=$book["title"];
+    $b=$book["description"];
+    $p=$book["price"];
+    $a=$book["is_active"];
+    $s=$book["style_id"];
 
-    $sql="INSERT INTO book (`title`, `description`, `price`, `is_active`) VALUES ({$book["title"]}, {$book['description']}, {$book['price']}, {$book['is_active']});";
+    $sql="INSERT INTO book (`title`, `description`, `price`, `is_active`, `style_id`) VALUES ('$t', '$b', '$p', '$a', '$s');";
     $res=mysqli_query($link, $sql);
 
     return $res;
@@ -65,8 +70,29 @@ function updateBook($book, $id){
     $b=$book["description"];
     $p=$book["price"];
     $a=$book["is_active"];
-   $sql="UPDATE book SET title='$t', description='$b', price='$p', is_active='$a' WHERE id = '$id'";
+    $s=$book["style_id"];
+    $sql="UPDATE book SET title='$t', description='$b', price='$p', is_active='$a', style_id='$s' WHERE id = '$id'";
     $res=mysqli_query($link, $sql);
 
     return $res;
+}
+
+function getStyles(){
+    global $link;
+    $sql="SELECT * FROM style";
+    $res=mysqli_query($link, $sql);
+    $styles=array();
+
+    while( $row=mysqli_fetch_assoc($res)){
+        $styles[]=$row;
+    }
+
+    return $styles;
+}
+
+function getStyleId($name){
+    global $link;
+    $sql="SELECT id FROM style WHERE name='$name'";
+    $res=mysqli_query($link, $sql);
+    return mysqli_fetch_assoc($res);
 }
