@@ -1,0 +1,10 @@
+routes:
+  book_page:
+    pattern: /book-{id}\.html
+    controller: Book
+    action: show
+    params:
+      id: [0-9]+
+
+# далее пойти в роутер
+ #'book_page' => new Route('/book-{id}\.html', 'Book', 'show', array('id' => '[0-9]+') ),

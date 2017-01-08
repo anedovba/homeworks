@@ -1,0 +1,17 @@
+<h1>Edit Book</h1>
+
+<form method="post">
+    <input type="hidden" name="id" value="<?=$form->id!==null?$form->id:''?>">
+
+    Title: <input type="text" name="title" class="form-control" value="<?=$form->title?>"> <br>
+    Description: <textarea name="description" id="" cols="30" rows="5" class="form-control" value=""><?=$form->description?></textarea><br>
+    Price: <input type="text" name="price" class="form-control" value="<?=$form->price?>"> <br>
+    Style: <select name='styles' size="1" class="form-control">
+        <?php foreach ($form->styles as $style):?>
+            <option><?=$style->getName()?></option>
+        <?php endforeach;?>
+    </select>
+    <br>
+    Is active: <input type="checkbox" name="is_active" class="checkbox" <?= $form->is_active?'checked':''?>><br><br>
+    <button class="btn btn-default" type="submit" name="submit">GO</button>
+</form>

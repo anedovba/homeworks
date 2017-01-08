@@ -1,0 +1,9 @@
+app:
+  meta:
+    default_title: My MVC site
+    deault_description: some text
+  emails:
+    support: support@mvc.com
+    manager: manager@mvc.com
+
+

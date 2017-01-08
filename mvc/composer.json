@@ -1,0 +1,12 @@
+{
+    "autoload": {
+        "psr-4": { "": "src/" }
+    },
+    "require": {
+        "monolog/monolog": "^1.22",
+        "symfony/yaml": "^3.2",
+        "twig/twig": "^1.30",
+        "symfony/var-dumper": "^3.2",
+        "codeguy/upload": "^1.3"
+    }
+}

@@ -1,0 +1,13 @@
+<h1><?=$book->getTitle()?></h1>
+<hr>
+<div class="row">
+    <div class="col-md-3 col-sm-12 col-xs-12">
+        <img class="img-responsive" src="http://d39kbiy71leyho.cloudfront.net/wp-content/uploads/2016/05/09170020/cats-politics-TN.jpg">
+    </div>
+    <div class="col-md-9 col-sm-12 col-sm-12">
+        <h3><?=$book->getTitle()?></h3>
+        <p><?=$book->getPrice()?></p>
+        <p><?=$book->getDescription()?></p>
+        <a href="/cart/add/<?=$book->getId()?>" class="btn btn-primary" role="button">To cart</a>
+    </div>
+</div>

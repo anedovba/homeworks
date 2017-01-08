@@ -1,0 +1,26 @@
+<h1>Style list</h1>
+<table class="table table-striped" >
+    <thread>
+        <tr class="bg-warning">
+            <th>
+                ID
+            </th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thread>
+    <tbody>
+    <!--        вывод стилей на страницу-->
+    <?php foreach ($styles as $style):?>
+        <tr>
+            <td><?= $style->getId()?></td>
+            <td><?= $style->getName()?></td>
+            <td>
+                <a href="/admin/styles/edit/<?=$style->getId()?>">Edit</a> <!--   todo make action to edit  -->
+                <a href="#">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach;?>
+
+    </tbody>
+</table>

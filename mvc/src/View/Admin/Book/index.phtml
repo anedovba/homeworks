@@ -1,0 +1,31 @@
+<h1>Books list</h1>
+<table class="table table-striped" >
+    <thread>
+        <tr class="bg-warning">
+            <th>
+                ID
+            </th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thread>
+    <tbody>
+    <!--        вывод книг на страницу-->
+    <!--    TODO: разбить по страницам по 10 шт например-->
+    <?php foreach ($books as $book):?>
+        <tr>
+            <td><?= $book->getId()?></td>
+            <td><?= $book->getTitle()?></td>
+            <td><?= $book->getDescription()?></td>
+            <th scope="row"><?= $book->getPrice()?></th>
+            <td>
+                <a href="/admin/books/edit/<?=$book->getId()?>">Edit</a> <!--   todo make action to edit book -->
+                <a href="#">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach;?>
+
+    </tbody>
+</table>
