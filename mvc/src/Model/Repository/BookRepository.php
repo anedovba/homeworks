@@ -6,72 +6,74 @@ use Library\EntityRepository;
 use Library\Session;
 use Model\Book;
 use Model\Style;
-
+use Model\Author;
 
 class BookRepository extends EntityRepository
 {
+    const SQLDATA='book.id as id, title, description, price, is_active, style_id, name, GROUP_CONCAT(author_id) as author_id';
+    private function findAuthor($id){
+
+        $sth=$this->pdo->query("select * from author where id={$id} ");
+        $data=$sth->fetch(\PDO::FETCH_ASSOC);
+
+        if(!$data)
+        {
+            throw new \Exception('not found');
+        }
+
+        if ($data){
+            $author=(new Author())
+                ->setId($data['id'])
+                ->setFirstName($data['first_name'])
+                ->setLastName($data['last_name'])
+                ->setDateBirth($data['date_birth'])
+                ->setDateDeath($data['date_death']);
+        }
+        return $author;
+    }
     //массив книжек для корзины
     public function findByIdArray(array $ids)
     {
-        // $ids=implode(',', $ids);
-        //считаем сколько ID в массиве
-//        $ids=array(1,5,6,8,9,10);
+
         if (!$ids) {
-return [];
+            return [];
         }
         $params=[];
         foreach ($ids as $id) {
             $params[]='?';
+
         }
         $params=implode(',', $params);
-//        $sth=$this->pdo->query("select book.id as id, title, description, price, is_active, style_id, name from book JOIN style ON style_id=style.id where id in ($ids) and is_active=1 ORDER BY book.id"); // in (3,5,7,4)
-        $sth=$this->pdo->prepare("select book.id as id, title, description, price, is_active, style_id, name from book JOIN style ON style_id=style.id where is_active=1 AND book.id in ({$params})"); // in (?,?,?)
+
+        $sth=$this->pdo->prepare("select ".self::SQLDATA." from book JOIN style ON style_id=style.id AND book.id in ({$params}) and is_active=1 LEFT JOIN book_author ON book.id=book_id  GROUP BY book.id ORDER BY book.id"); // in (?,?,?)
         $sth->execute($ids);
 
         while ($row=$sth->fetch(\PDO::FETCH_ASSOC)){
 
-            $style=(new Style())
-                ->setId($row['style_id'])
-                ->setName($row['name'])
-            ;
-            $book=(new Book())
-                ->setId($row['id'])
-                ->setTitle($row['title'])
-                ->setDescription($row['description'])
-                ->setPrice($row['price'])
-                ->setIsActive($row['is_active'])
-                ->setStyle($style)
-            ;
-            $books[]=$book;
+            $books[]=$this->createBook($row['author_id'], $row['style_id'], $row['name'], $row['id'], $row['title'], $row['description'], $row['price'], $row['is_active']);
         }
         return $books;
     }
-    //количество книг на странице храним в котнроллере
+
+    /**
+     * количество книг на странице храним в котнроллере
+     * @param $page
+     * @param $perPage
+     * @return array
+     */
     public function findActiveByPage($page, $perPage)
     {
         $offset = ($page - 1) * $perPage;
-        $sql = "select book.id as id, title, description, price, is_active, style_id, name from book JOIN style ON style_id=style.id where is_active=1 ORDER BY book.id LIMIT {$offset}, {$perPage}";
+        $sql = "select ".self::SQLDATA." from book JOIN style ON style_id=style.id and is_active=1 LEFT JOIN book_author ON book.id=book_id GROUP BY book.id ORDER BY book.id LIMIT {$offset}, {$perPage}";
 
         $sth = $this->pdo->query($sql);
 
         $books = [];
 
         while ($row=$sth->fetch(\PDO::FETCH_ASSOC)){
-            $style=(new Style())
-                ->setId($row['style_id'])
-                ->setName($row['name'])
-            ;
-            $book=(new Book())
-                ->setId($row['id'])
-                ->setTitle($row['title'])
-                ->setDescription($row['description'])
-                ->setPrice($row['price'])
-                ->setIsActive($row['is_active'])
-                ->setStyle($style)
-            ;
-            $books[]=$book;
-
+            $books[]=$this->createBook($row['author_id'], $row['style_id'], $row['name'], $row['id'], $row['title'], $row['description'], $row['price'], $row['is_active']);
         }
+
         return $books;
     }
 
@@ -92,10 +94,14 @@ return [];
        // $res=$re
     }
 
+    /**
+     * @param bool $hydrateArray
+     * @return array
+     */
     public function findAll($hydrateArray=false)//$hydrateArray - для API что б в итоге получить ассоциативный массив
     {
         //TODO: join, DONE
-        $sth=$this->pdo->query('select book.id as id, title, description, price, is_active, style_id, name from book JOIN style ON style_id=style.id ORDER BY book.id');
+        $sth=$this->pdo->query('select '.self::SQLDATA.' from book JOIN style ON style_id=style.id LEFT JOIN book_author ON book.id=book_id GROUP BY book.id ORDER BY book.id');
 
         //info to API
         if($hydrateArray)
@@ -104,43 +110,22 @@ return [];
         }
 
         $books=[];
+
         while ($row=$sth->fetch(\PDO::FETCH_ASSOC)){
+            //TODO : author
             //TODO: Style DONE
-            $style=(new Style())
-                ->setId($row['style_id'])
-                ->setName($row['name'])
-            ;
-            $book=(new Book())
-                ->setId($row['id'])
-                ->setTitle($row['title'])
-                ->setDescription($row['description'])
-                ->setPrice($row['price'])
-                ->setIsActive($row['is_active'])
-                ->setStyle($style)
-                ;
-            $books[]=$book;
+            $books[]=$this->createBook($row['author_id'], $row['style_id'], $row['name'], $row['id'], $row['title'], $row['description'], $row['price'], $row['is_active']);
         }
+
         return $books;
     }
 
     public function findActive(){
-        //$pdo=DbConnection::getInstance()->getPdo();
-        $sth=$this->pdo->query('select book.id as id, title, description, price, is_active, style_id, name from book JOIN style ON style_id=style.id where is_active=1 ORDER BY book.id');
+
+        $sth=$this->pdo->query('select '.self::SQLDATA.' from book JOIN style ON style_id=style.id and is_active=1 LEFT JOIN book_author ON book.id=book_id GROUP BY book.id ORDER BY book.id');
 
         while ($row=$sth->fetch(\PDO::FETCH_ASSOC)){
-            $style=(new Style())
-                ->setId($row['style_id'])
-                ->setName($row['name'])
-            ;
-            $book=(new Book())
-                ->setId($row['id'])
-                ->setTitle($row['title'])
-                ->setDescription($row['description'])
-                ->setPrice($row['price'])
-                ->setIsActive($row['is_active'])
-                ->setStyle($style)
-            ;
-            $books[]=$book;
+            $books[]=$this->createBook($row['author_id'], $row['style_id'], $row['name'], $row['id'], $row['title'], $row['description'], $row['price'], $row['is_active']);
         }
         return $books;
     }
@@ -155,35 +140,10 @@ return [];
         return  $PagesCount;
     }
 
-    public function findOnePage($currentPage, $countOnPage)
-    {
-        $currentPage-=1;
-        $sth = $this->pdo->query("SELECT * FROM book LIMIT {$currentPage} {$countOnPage}");
-        //Запрашиваем число записей
-        while ($row=$sth->fetch(\PDO::FETCH_ASSOC)){
-            $style=(new Style())
-                ->setId($row['style_id'])
-                ->getName($row['name'])
-            ;
-            $book=(new Book())
-                ->setId($row['id'])
-                ->setTitle($row['title'])
-                ->setDescription($row['description'])
-                ->setPrice($row['price'])
-                ->setIsActive($row['is_active'])
-                ->setStyle($style)
-            ;
-            $books[]=$book;
-        }
-        return $books;
-    }
-
     public function find($id)
     {
-        $query="select book.id as id, title, description, price, is_active, style_id, name from book JOIN style ON style_id=style.id where book.id=$id ORDER BY book.id";
+        $query="select ".self::SQLDATA." from book JOIN style ON style_id=style.id and book.id=$id LEFT JOIN book_author ON book.id=book_id ORDER BY book.id";
         $sth=$this->pdo->query($query);
-
-//        $sth->execute(compact($id));
 
         $data=$sth->fetch(\PDO::FETCH_ASSOC);
 
@@ -234,6 +194,43 @@ return [];
             'id'=>$book->getId())
         );
 
+    }
+
+    private function createBook($autor_id, $style_id, $name, $id, $title, $description, $price, $is_active)
+    {
+        $author_id=explode(',', $autor_id);
+        $authors=[];
+
+        foreach ($author_id as $idA){
+            if($idA===''){
+                $authors[]=(new Author())
+                    ->setId('')
+                    ->setFirstName('')
+                    ->setLastName('')
+                    ->setDateBirth('')
+                    ->setDateDeath('');
+                continue;
+
+            }
+            $authors[]=$this->findAuthor($idA);
+
+        }
+
+        $style=(new Style())
+            ->setId($style_id)
+            ->setName($name)
+        ;
+        $book=(new Book())
+            ->setId($id)
+            ->setTitle($title)
+            ->setDescription($description)
+            ->setPrice($price)
+            ->setIsActive($is_active)
+            ->setStyle($style)
+            ->setAuthors($authors)
+        ;
+        $books[]=$book;
+        return $book;
     }
 
 

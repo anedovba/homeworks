@@ -1,6 +1,8 @@
 <?php
 
 namespace Model;
+
+use Model\Author;
 class Book
 {
     private $id;
@@ -9,6 +11,24 @@ class Book
     private $price;
     private $is_active;
     private $style;
+    private $authors;
+
+    /**
+     * @return mixed
+     */
+    public function getAuthors()
+    {
+        return $this->authors;
+    }
+
+    /**
+     * @param mixed $authors
+     */
+    public function setAuthors($authors)
+    {
+        $this->authors = $authors;
+        return $this;
+    }
 
     /**
      * @return mixed

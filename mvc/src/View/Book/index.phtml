@@ -4,11 +4,15 @@
 
 <nav aria-label="Page navigation" style="text-align: center">
     <ul class="pagination">
-        <?php foreach ($pagination as $button) :
-            if ($button->isActive) : ?>
-                <li><a href="?page=<?=$button->page?>"><?=$button->text?></a></li>
-            <?php else : ?>
-                <li class='disabled'><a href="#"><?=$button->text?></a></li>
+        <?php foreach ($pagination as $button) :?>
+            <?php if ($button->current) : ?>
+                <li class = "active"><a href="?page=<?=$button->page?>"><?=$button->text?></a></li>
+                <?php elseif($button->page==='...'): ?>
+                    <li class='disabled'><a href="#"><?=$button->text?></a></li>
+                    <?php elseif($button->isActive) : ?>
+                    <li><a href="?page=<?=$button->page?>"><?=$button->text?></a></li>
+                    <?php else : ?>
+                        <li class='disabled'><a href="#"><?=$button->text?></a></li>
             <?php endif;
         endforeach; ?>
 
@@ -25,7 +29,11 @@
                     <h3><?=$book->getTitle()?></h3>
                     <p><?=$book->getPrice()?></p>
 <!--                    TODO - авторы-->
-                    <p>...authors...</p>
+                    <p>
+                    <?php foreach ($book->getAuthors() as $author):?>
+                    <?="'".$author->getFirstName()." ".$author->getLastName()."' "?>
+                    <?php endforeach;?>
+                    </p>
                     <p>
                         <a href="/book-<?=$book->getId()?>.html" class="btn btn-primary" role="button">Details</a>
                         <a href="/cart/add/<?=$book->getId()?>" class="btn btn-default" role="button">Add to cart</a>
@@ -39,9 +47,13 @@
 <!-- TODO -текущая страница - выделить, не указывать все страницы-->
 <nav aria-label="Page navigation" style="text-align: center">
     <ul class="pagination">
-        <?php foreach ($pagination as $button) :
-            if ($button->isActive ) : ?>
-                <li><a href="?page=<?=$button->page?>" > <?=$button->text?></a></li>
+        <?php foreach ($pagination as $button) :?>
+            <?php if ($button->current) : ?>
+                <li class = "active"><a href="?page=<?=$button->page?>"><?=$button->text?></a></li>
+            <?php elseif($button->page==='...'): ?>
+                <li class='disabled'><a href="#"><?=$button->text?></a></li>
+            <?php elseif($button->isActive) : ?>
+                <li><a href="?page=<?=$button->page?>"><?=$button->text?></a></li>
             <?php else : ?>
                 <li class='disabled'><a href="#"><?=$button->text?></a></li>
             <?php endif;
@@ -50,42 +62,3 @@
     </ul>
 </nav>
 
-
-<!--<table class="table table-striped" >-->
-<!--    <thread>-->
-<!--        <tr class="bg-warning">-->
-<!--            <th>-->
-<!--                ID-->
-<!--            </th>-->
-<!--            <th>Title</th>-->
-<!--            <th>Description</th>-->
-<!--            <th>Price</th>-->
-<!--        </tr>-->
-<!--    </thread>-->
-<!--    <tbody>-->
-<!--<!--        вывод книг на страницу-->
-<!--<!--    TODO: разбить по страницам по 10 шт например-->
-<!--    --><?php //foreach ($books as $book):?>
-<!--       <tr>
-    <td><?= $book->getId()?></td>
-    <td><?= $book->getTitle()?></td>
-    <td><?= $book->getDescription()?></td>
-    <th scope="row"><?= $book->getPrice()?></th>
-</tr>
-<!--    --><?php //endforeach;?>
-<!---->
-<!--    <?php //while ($pageCount):?>
-<!--        <?php //foreach ($books as $book):?>
-<!--                <tr>
-<!--                    <td><?//= $book->getId()?><!--</td>
-<!--                    <td><?//= $book->getTitle()?><!--</td>
-<!--                    <td><?//= $book->getDescription()?><!--</td>
-<!--                    <th scope="row"><?//= $book->getPrice()?><!--</th>
-<!--                </tr>
-<!--            <?php //endforeach;?>
-<!--        <?php //$pageCount--;?>
-<?php //endwhile;?>
-<!--<b><?php //var_dump($pageCount);?><!--</b>
-<!--
-    </tbody>
-</table>

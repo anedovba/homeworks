@@ -11,31 +11,20 @@ class BookController extends Controller
     public function indexAction(Request $request)
     {
         $page=(int)$request->get('page',1);
+        if ($page < 1)
+        {
+              $page=1;
+        }
         $repos=$this->container->get('repository_manager')->getRepository('Book');
         $count = $repos->count();
-        //$repos=new BookRepository();
-//        $repos=$this->container->get('repository_manager')->getRepository('Book');
-        $books = $repos->findActiveByPage($page, self::BOOKS_PER_PAGE);
-        //$books=$repos->findAll();
-//        $books=$repos->findActive();
-//        //достать инфо с базы
-//        $books=['Book1', 'book2'];
-//        $author='Mike';
-
+//        $books = $repos->findActiveByPage($page, self::BOOKS_PER_PAGE);
+        $books = $repos->findActive();
         if (!$books && $count) {
             $this->container->get('router')->redirect('/books');
         }
-
-        //TODO paginator
-
-        $pagination = new Pagination(['itemsCount' => $count, 'itemsPerPage' => self::BOOKS_PER_PAGE, 'currentPage' => $page]);
-
-//        $countOnPage=10;
-//
-//        $pageCount=$repos->pageCount($countOnPage);
-//        $books=$repos->findOnePage(get('currentPage') ,$countOnPage);
-        $args=['books'=>$books, 'pagination'=>$pagination /*, 'pageCount'=>$pageCount, 'countOnPage'=>$countOnPage, 'currentPage'=>get('currentPage')*/];
-
+        //TODO paginator - Done
+        $pagination = new Pagination($count, self::BOOKS_PER_PAGE, $page);
+        $args=['books'=>$books, 'pagination'=>$pagination];
         return $this->render('index.phtml', $args);
     }
 
