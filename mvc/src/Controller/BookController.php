@@ -17,8 +17,8 @@ class BookController extends Controller
         }
         $repos=$this->container->get('repository_manager')->getRepository('Book');
         $count = $repos->count();
-//        $books = $repos->findActiveByPage($page, self::BOOKS_PER_PAGE);
-        $books = $repos->findActive();
+        $books = $repos->findActiveByPage($page, self::BOOKS_PER_PAGE);
+//        $books = $repos->findActive();
         if (!$books && $count) {
             $this->container->get('router')->redirect('/books');
         }
