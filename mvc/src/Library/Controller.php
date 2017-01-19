@@ -7,6 +7,14 @@ abstract class Controller{
 
     protected $container;
 
+    /**
+     * @return mixed
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
 //    private $layout = 'default_layout.phtml';
 // делаем его статичным
     private static $layout = 'default_layout.phtml';

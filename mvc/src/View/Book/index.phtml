@@ -28,7 +28,7 @@
                 <div class="caption">
                     <h3><?=$book->getTitle()?></h3>
                     <p><?=$book->getPrice()?></p>
-<!--                    TODO - авторы-->
+<!--                    TODO - авторы DONE-->
                     <p>
                     <?php foreach ($book->getAuthors() as $author):?>
                     <?="'".$author->getFirstName()." ".$author->getLastName()."' "?>
@@ -44,7 +44,7 @@
 
     <?php endforeach; ?>
 </div>
-<!-- TODO -текущая страница - выделить, не указывать все страницы-->
+<!-- TODO -текущая страница - выделить, не указывать все страницы DONE-->
 <nav aria-label="Page navigation" style="text-align: center">
     <ul class="pagination">
         <?php foreach ($pagination as $button) :?>

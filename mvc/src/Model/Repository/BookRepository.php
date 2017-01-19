@@ -8,9 +8,22 @@ use Model\Book;
 use Model\Style;
 use Model\Author;
 
+/**
+ * Class BookRepository
+ * @package Model\Repository
+ */
 class BookRepository extends EntityRepository
 {
+    /**
+     *
+     */
     const SQLDATA='book.id as id, title, description, price, is_active, style_id, name, GROUP_CONCAT(author_id) as author_id';
+
+    /**
+     * @param $id
+     * @return $this
+     * @throws \Exception
+     */
     private function findAuthor($id){
 
         $sth=$this->pdo->query("select * from author where id={$id} ");
@@ -31,7 +44,12 @@ class BookRepository extends EntityRepository
         }
         return $author;
     }
-    //массив книжек для корзины
+
+    /**
+     * массив книжек для корзины
+     * @param array $ids
+     * @return array
+     */
     public function findByIdArray(array $ids)
     {
 
@@ -78,6 +96,28 @@ class BookRepository extends EntityRepository
     }
 
     /**
+     * @param $page
+     * @param $perPage
+     * @return array
+     */
+    public function findAllByPage($page, $perPage)
+    {
+        $offset = ($page - 1) * $perPage;
+        $sql = "select ".self::SQLDATA." from book JOIN style ON style_id=style.id LEFT JOIN book_author ON book.id=book_id GROUP BY book.id ORDER BY book.id LIMIT {$offset}, {$perPage}";
+
+        $sth = $this->pdo->query($sql);
+
+        $books = [];
+
+        while ($row=$sth->fetch(\PDO::FETCH_ASSOC)){
+            $books[]=$this->createBook($row['author_id'], $row['style_id'], $row['name'], $row['id'], $row['title'], $row['description'], $row['price'], $row['is_active']);
+        }
+
+        return $books;
+    }
+
+
+    /**
      * @param bool $active
      * @return mixed
      * количество записей в бд
@@ -95,6 +135,16 @@ class BookRepository extends EntityRepository
     }
 
     /**
+     * @return mixed
+     */
+    public function countAll(){
+        $sql = 'select count(*) from book';
+        $sth=$this->pdo->query($sql);
+        //возвращает значение
+        return $sth->fetchColumn();
+    }
+
+    /**
      * @param bool $hydrateArray
      * @return array
      */
@@ -102,7 +152,6 @@ class BookRepository extends EntityRepository
     {
         //TODO: join, DONE
         $sth=$this->pdo->query('select '.self::SQLDATA.' from book JOIN style ON style_id=style.id LEFT JOIN book_author ON book.id=book_id GROUP BY book.id ORDER BY book.id');
-
         //info to API
         if($hydrateArray)
         {
@@ -115,11 +164,14 @@ class BookRepository extends EntityRepository
             //TODO : author
             //TODO: Style DONE
             $books[]=$this->createBook($row['author_id'], $row['style_id'], $row['name'], $row['id'], $row['title'], $row['description'], $row['price'], $row['is_active']);
-        }
+                   }
 
         return $books;
     }
 
+    /**
+     * @return array
+     */
     public function findActive(){
 
         $sth=$this->pdo->query('select '.self::SQLDATA.' from book JOIN style ON style_id=style.id and is_active=1 LEFT JOIN book_author ON book.id=book_id GROUP BY book.id ORDER BY book.id');
@@ -130,6 +182,10 @@ class BookRepository extends EntityRepository
         return $books;
     }
 
+    /**
+     * @param $countOnPage
+     * @return int
+     */
     public function pageCount($countOnPage)
     {
         $sth = $this->pdo->query("SELECT COUNT(*) as c FROM book");
@@ -140,40 +196,62 @@ class BookRepository extends EntityRepository
         return  $PagesCount;
     }
 
+    /**
+     * @param $id
+     * @return $this
+     * @throws \Exception
+     */
     public function find($id)
     {
         $query="select ".self::SQLDATA." from book JOIN style ON style_id=style.id and book.id=$id LEFT JOIN book_author ON book.id=book_id ORDER BY book.id";
         $sth=$this->pdo->query($query);
 
-        $data=$sth->fetch(\PDO::FETCH_ASSOC);
+        $row=$sth->fetch(\PDO::FETCH_ASSOC);
 
-        if(!$data)
+        if(!$row)
         {
            throw new \Exception('not found');
         }
 
-        if ($data){
-            $style=(new Style())
-                ->setId($data['style_id'])
-                ->setName($data['name'])
-            ;
-
-            $book=(new Book())
-                ->setId($data['id'])
-                ->setTitle($data['title'])
-                ->setDescription($data['description'])
-                ->setPrice($data['price'])
-                ->setIsActive($data['is_active'])
-                ->setStyle($style)
-            ;
-
+        if ($row){
+            $book=$this->createBook($row['author_id'], $row['style_id'], $row['name'], $row['id'], $row['title'], $row['description'], $row['price'], $row['is_active']);
         }
         return $book;
     }
 
+    /**
+     * @param Book $book
+     * @param null $table
+     */
     public function save(Book $book, $table=null)
     {
-        //if id===null - insert else update where id=123
+        if ($book->getId()== ''){
+            $class=explode('\\',get_class($book));
+
+            $class=end($class);
+            if($table==null){
+                $table=strtolower($class);
+            }
+            $title=$book->getTitle();
+            $description=$book->getDescription();
+            $price=$book->getPrice();
+            $is_active=$book->getIsActive();
+            $style_id=$book->getStyle()->getId();
+
+            $query="insert INTO {$table} (title, description,  price, is_active, style_id) VALUES ('$title', '$description', $price, $is_active, $style_id)";
+            $sth=$this->pdo->query($query);
+
+
+//            $sth->execute(array(
+//                    'title'=>$book->getTitle(),
+//                    'description'=>$book->getDescription(),
+//                    'price'=>$book->getPrice(),
+//                    'is_active'=>$book->getIsActive(),
+//                    'style_id'=>$book->getStyle()->getId())
+//            );
+//
+        }
+        else {
         $class=explode('\\',get_class($book));
 
         $class=end($class);
@@ -193,9 +271,20 @@ class BookRepository extends EntityRepository
             'style_id'=>$book->getStyle()->getId(),
             'id'=>$book->getId())
         );
-
+    }
     }
 
+    /**
+     * @param $autor_id
+     * @param $style_id
+     * @param $name
+     * @param $id
+     * @param $title
+     * @param $description
+     * @param $price
+     * @param $is_active
+     * @return $this
+     */
     private function createBook($autor_id, $style_id, $name, $id, $title, $description, $price, $is_active)
     {
         $author_id=explode(',', $autor_id);
@@ -210,8 +299,9 @@ class BookRepository extends EntityRepository
                     ->setDateBirth('')
                     ->setDateDeath('');
                 continue;
-
             }
+//            dump($idA);
+//            $authors[]=$this->container->get('repository_manager')->getRepository('Author')->findAuthors($idA);
             $authors[]=$this->findAuthor($idA);
 
         }
@@ -229,8 +319,15 @@ class BookRepository extends EntityRepository
             ->setStyle($style)
             ->setAuthors($authors)
         ;
-        $books[]=$book;
         return $book;
+    }
+
+    /**
+     * @param $id
+     */
+    public function removeById($id)
+    {
+        $this->pdo->query("DELETE FROM book WHERE id = {$id}");
     }
 
 

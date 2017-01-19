@@ -19,6 +19,7 @@ class BookController extends Controller
         $count = $repos->count();
         $books = $repos->findActiveByPage($page, self::BOOKS_PER_PAGE);
 //        $books = $repos->findActive();
+//      $books = $repos->findAll();
         if (!$books && $count) {
             $this->container->get('router')->redirect('/books');
         }
@@ -32,7 +33,12 @@ class BookController extends Controller
     {
         //TODO страничка с одной книгой DONE
         $repos=$this->container->get('repository_manager')->getRepository('Book');
+        $count = $repos->count();
         $id = $request->get('id');
+        if ($id > $count or $id < 1) {
+            $this->container->get('router')->redirect('/books');
+        }
+
         $book = $repos->find($id);
 
         return $this->render('show.phtml', compact('book'));

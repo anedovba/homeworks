@@ -8,6 +8,11 @@
         <h3><?=$book->getTitle()?></h3>
         <p><?=$book->getPrice()?></p>
         <p><?=$book->getDescription()?></p>
+        <p>Authors:</p>
+            <?php foreach ($book->getAuthors() as $author):?>
+                <p><?="'".$author->getFirstName()." ".$author->getLastName()."' "?></p>
+            <?php endforeach;?>
+
         <a href="/cart/add/<?=$book->getId()?>" class="btn btn-primary" role="button">To cart</a>
     </div>
 </div>

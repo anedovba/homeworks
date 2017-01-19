@@ -1,4 +1,27 @@
 <h1>Books list</h1>
+<hr>
+<a href="/admin/books/edit/">
+<button type = "button" class = "btn btn-primary btn-lg" style="float: right">
+    ADD NEW BOOK
+</button>
+</a>
+
+<nav aria-label="Page navigation" style="text-align: center; clear: both ">
+    <ul class="pagination">
+        <?php foreach ($pagination as $button) :?>
+            <?php if ($button->current) : ?>
+                <li class = "active"><a href="?page=<?=$button->page?>"><?=$button->text?></a></li>
+            <?php elseif($button->page==='...'): ?>
+                <li class='disabled'><a href="#"><?=$button->text?></a></li>
+            <?php elseif($button->isActive) : ?>
+                <li><a href="?page=<?=$button->page?>"><?=$button->text?></a></li>
+            <?php else : ?>
+                <li class='disabled'><a href="#"><?=$button->text?></a></li>
+            <?php endif;
+        endforeach; ?>
+
+    </ul>
+</nav>
 <table class="table table-striped" >
     <thread>
         <tr class="bg-warning">
@@ -8,12 +31,13 @@
             <th>Title</th>
             <th>Description</th>
             <th>Price</th>
-            <th>Actions</th>
+            <th>Authors</th>
+            <th colspan="2" style="text-align: center">Actions</th>
         </tr>
     </thread>
     <tbody>
     <!--        вывод книг на страницу-->
-    <!--    TODO: разбить по страницам по 10 шт например-->
+    <!--    TODO: разбить по страницам по 20 шт например DONE-->
     <?php foreach ($books as $book):?>
         <tr>
             <td><?= $book->getId()?></td>
@@ -21,8 +45,17 @@
             <td><?= $book->getDescription()?></td>
             <th scope="row"><?= $book->getPrice()?></th>
             <td>
-                <a href="/admin/books/edit/<?=$book->getId()?>">Edit</a> <!--   todo make action to edit book -->
-                <a href="#">Delete</a>
+                <?php foreach ($book->getAuthors() as $author):?>
+                <?="'".$author->getFirstName()." ".$author->getLastName()."' "?>
+            <?php endforeach;?>
+            <td style="text-align: center">
+                <a href="/admin/books/edit/<?=$book->getId()?>"><button type = "button" class = "btn">
+                        Edit
+                    </button></a> </td>
+            <td><!--   todo make action to edit book DONE -->
+                <a href="/admin/books/delete/<?=$book->getId()?>"><button type = "button" class = "btn delete">
+                        Delete
+                    </button></a>
             </td>
         </tr>
     <?php endforeach;?>

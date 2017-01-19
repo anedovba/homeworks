@@ -38,15 +38,15 @@ class AuthorRepository extends EntityRepository
             throw new \Exception('not found');
         }
 
-//        if ($data){
-//            $author=(new Author())
-//                ->setId($data['id'])
-//                ->setFirstName($data['first_name'])
-//                ->setLastName($data['last_name'])
-//                ->setDateBirth($data['date_birth'])
-//                ->setDateDeath($data['date_death']);
-//        }
-        return $data;
+        if ($data){
+            $author=(new Author())
+                ->setId($data['id'])
+                ->setFirstName($data['first_name'])
+                ->setLastName($data['last_name'])
+                ->setDateBirth($data['date_birth'])
+                ->setDateDeath($data['date_death']);
+        }
+        return $author;
     }
 
     public function save(Author $author, $table=null)

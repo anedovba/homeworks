@@ -32,6 +32,8 @@ return  array(
     'admin_default' => new Route('/admin/?', 'Admin\\Default', 'index'),
     'admin_books' => new Route('/admin/books/?', 'Admin\\Book', 'index'),
     'admin_book_edit' => new Route('/admin/books/edit/{id}', 'Admin\\Book', 'edit', array('id' => '[0-9]+')),
+    'admin_book_delete' => new Route('/admin/books/delete/{id}', 'Admin\\Book', 'delete', array('id' => '[0-9]+')),
+    'admin_book_add' => new Route('/admin/books/edit/?', 'Admin\\Book', 'add'),
     'admin_styles' => new Route('/admin/styles/?', 'Admin\\Style', 'index'),
     'admin_style_edit' => new Route('/admin/styles/edit/{id}', 'Admin\\Style', 'edit', array('id' => '[0-9]+')),
 
