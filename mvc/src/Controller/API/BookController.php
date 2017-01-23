@@ -70,4 +70,28 @@ class BookController extends Controller
         //TODO
     }
 
+    public function deleteAction(Request $request)
+    {
+        $format = $request->get('_format', 'json');
+        $formatter = FormatterFactory::create($format);
+        $id=$request->get('id');
+        dump($id);
+        die;
+        try{
+            $this
+                ->container
+                ->get('repository_manager')
+                ->getRepository('Book')
+                ->removeById($id);
+            $code=200;
+            $message="Deleted";
+        }catch (\PDOException $e){
+            $message=$e->getMessage();
+            $code=500;
+        }
+
+        $response = new Response($code, $message, $formatter);
+        return $response;
+    }
+
 }

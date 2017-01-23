@@ -25,6 +25,11 @@
     <![endif]-->
 
     <script src="/js/script.js"></script>
+    <style>
+        .ajax-spinner{
+
+        }
+    </style>
 </head>
 
 <body>
@@ -69,9 +74,8 @@
 
 
     <div class="starter-template">
-<!--        --><?php //if(\Library\Session::has(\Library\Session::FLASH_KEY)):?>
                 <div class="alert alert-info"><?=\Library\Session::getFlash()?></div>
-<!--        --><?php //endif;?>
+
         <?=$content ?>
         <br>
         <br>

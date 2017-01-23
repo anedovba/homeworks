@@ -10,3 +10,12 @@ body {
 .alert:empty {
     display: none;
 }
+.ajax-spinner{
+    background-image: url("/img/ajax.gif");
+    background-repeat: no-repeat;
+    background-size: 30px;
+    height: 30px;
+    width: 30px;
+    margin: 20px auto;
+    display:none;
+}

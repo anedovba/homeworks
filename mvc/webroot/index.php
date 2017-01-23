@@ -137,7 +137,7 @@ try{
 }
 
 echo $content;
-echo '<hr>';
+
 
 //require VIEW_DIR.'default_layout.phtml'; // переносим в контроллер что б вначале отрисовывалась середина во время рендера
 
