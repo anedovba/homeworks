@@ -13,6 +13,11 @@
                 <p><?="'".$author->getFirstName()." ".$author->getLastName()."' "?></p>
             <?php endforeach;?>
 
-        <a href="/cart/add/<?=$book->getId()?>" class="btn btn-primary" role="button">To cart</a>
+<!--        <a href="/cart/add/<?=$book->getId()?>" class="btn btn-primary" role="button">To cart</a>-->
+        <form action="/cart/add/<?=$book->getId()?>">
+            Amount:
+            <input type="number" name="amount" min="1" value="1"/>
+            <button class="btn btn-primary">To cart</button>
+        </form>
     </div>
 </div>

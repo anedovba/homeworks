@@ -16,6 +16,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Symfony\Component\Yaml\Yaml;
 use Controller\ErrorController;
+use Model\CartService;
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT',  __DIR__.DS. '..'.DS );
@@ -77,7 +78,7 @@ try{
     $logger = new Logger('default_logger');
 // Now add some handlers
     $logger->pushHandler(new StreamHandler(LOG_DIR.'log.txt', Logger::DEBUG));
-
+    $cartService = new CartService();
 
     //в контейнер складываем все объекты которые необходимы для работы и которые не надо будет создавать много раз
     $container =new Container();
@@ -93,6 +94,7 @@ try{
     //title и description
     $container->set('meta_helper', $metaHelper);
     $container->set('logger', $logger);//опрокидываем в контейнер и в контроллере можно использовать например в security контроллере
+    $container->set('cart_service', $cartService);
 
     $router->match($request);//перебор всех адресов на поиск совпадения
 

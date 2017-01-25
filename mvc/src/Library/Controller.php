@@ -70,12 +70,42 @@ abstract class Controller{
 //    }
     public function getCartCount()
     {
-        //TODO
+        //TODO DONE
         // $cartService = $this->container->get('cart_service'); // карт сервис должен возвращать инстанс корзины - из кук
         // return $cartService->count();
-        $cart=new Cart();
+//        $cart=new Cart();
+//
+//        return $cart->count();
+        $cartService = $this->container->get('cart_service');
+        return $cartService->count();
+    }
 
-        return $cart->count();
+    public function getCartJson()
+    {
+        $cartService = $this->container->get('cart_service');
+        return $cartService->getCartJson();
+    }
+
+    public function setCookie(Cookie $cookie)
+    {
+        setcookie($cookie->name, $cookie->value, $cookie->expire, $cookie->path);
+    }
+
+    public function getCookie($name)
+    {
+        if ( isset($_COOKIE[$name]) ){
+            return $_COOKIE[$name];
+        }
+
+        return null;
+    }
+
+    public function removeCookie($name)
+    {
+        if (isset($_COOKIE[$name])){
+            self::set($name, '', -3600);
+            unset($_COOKIE[$name]);
+        }
     }
 
     public function getTitle()

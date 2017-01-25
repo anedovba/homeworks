@@ -201,9 +201,12 @@ class BookRepository extends EntityRepository
      * @return $this
      * @throws \Exception
      */
-    public function find($id)
+    public function find($id, $findOnlyActive = false, $hydrateArray = false)
     {
         $query="select ".self::SQLDATA." from book JOIN style ON style_id=style.id and book.id=$id LEFT JOIN book_author ON book.id=book_id ORDER BY book.id";
+        if ($findOnlyActive) {
+            $query = "select ".self::SQLDATA." from book JOIN style ON style_id=style.id and book.id=$id and is_active = 1 LEFT JOIN book_author ON book.id=book_id ORDER BY book.id";
+        }
         $sth=$this->pdo->query($query);
 
         $row=$sth->fetch(\PDO::FETCH_ASSOC);
@@ -211,6 +214,9 @@ class BookRepository extends EntityRepository
         if(!$row)
         {
            throw new \Exception('not found');
+        }
+        if ($hydrateArray) {
+            return $row;
         }
 
         if ($row){

@@ -1,6 +1,24 @@
 <h1>My cart</h1>
 <hr>
 
-<?php foreach ($books as $book): ?>
-    <?=$book->getId();?> <?=$book->getTitle();?>  <br>
-<?php endforeach;?>
+<!--<?php foreach ($books as $book): ?>-->
+<!--<?=$book->getId();?><?=$book->getTitle();?>  <br>-->
+<!--    <?=$book->getId();?><?=$book->getTitle();?> : <?=$cart->{$book->getId()}?>  <br>-->
+<!--<?php endforeach;?>-->
+
+<input type='hidden' value="<?=$this->getCartJson()?>">
+
+<ul class="list-group">
+    <?php foreach ($books as $book): ?>
+        <li class="list-group-item text-left">
+            Book #<?=$book->getId();?>: <b><?=$book->getTitle();?></b> :
+            <input type='number' min='0' id='cart-item-<?=$book->getId();?>' value="<?=$cart->{$book->getId()}?>">
+            &times; <?=$book->getPrice()?> = <span id='result-<?=$cart->{$book->getId()}?>'></span>
+        </li>
+
+    <?php endforeach; ?>
+    <li class="list-group-item text-right">Total: <span id='total'></span></li>
+
+</ul>
+<button type='button' class="btn btn-default">Save</button>
+<a href="#" class="btn btn-info">Checkout</a>
