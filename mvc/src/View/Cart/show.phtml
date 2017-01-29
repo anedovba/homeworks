@@ -6,19 +6,19 @@
 <!--    <?=$book->getId();?><?=$book->getTitle();?> : <?=$cart->{$book->getId()}?>  <br>-->
 <!--<?php endforeach;?>-->
 
-<input type='hidden' value="<?=$this->getCartJson()?>">
+<input type='hidden' value="<?=$this->getCartJson()?>" >
 
-<ul class="list-group">
+<ul class="list-group" id='cart-list'>
     <?php foreach ($books as $book): ?>
         <li class="list-group-item text-left">
             Book #<?=$book->getId();?>: <b><?=$book->getTitle();?></b> :
             <input type='number' min='0' id='cart-item-<?=$book->getId();?>' value="<?=$cart->{$book->getId()}?>">
-            &times; <?=$book->getPrice()?> = <span id='result-<?=$cart->{$book->getId()}?>'></span>
+            &times; <span id='price-<?=$book->getId()?>'><?=$book->getPrice()?></span> = <span id='result-<?=$book->getId()?>'></span>
         </li>
 
     <?php endforeach; ?>
     <li class="list-group-item text-right">Total: <span id='total'></span></li>
 
 </ul>
-<button type='button' class="btn btn-default">Save</button>
+<button type='button' class="btn btn-default" id="save-cart">Save</button>
 <a href="#" class="btn btn-info">Checkout</a>

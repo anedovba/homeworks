@@ -2,7 +2,71 @@
 //TODO по клику на тайтл показывать/скрывать дескрипшн DONE
 //TODO валидация формы логина DONE
 //TODO удалять книгу из админки аяксом DONE
+// TODO подгружать книги jQuery - след страница - при этом прячем ее на пагинаторе
+// TODO добавлять книги в корзину ajax при нажати  на кнопку Add to cart DONE
 $(document).ready(function(){
+    var cartCount;
+    // обрабатываем клик на кнопку  Add to cart
+    $('a[id^=add-to-cart-btn-]').click(function (e) {
+        e.preventDefault();
+        var id=$(this).attr('id').replace('add-to-cart-btn-','');
+        $.get('/cart/add/'+id);
+        cartCount=parseInt($('#cart-count').text())+1;
+        $('#cart-count').text(cartCount);
+    });
+
+
+    //cart calculation
+    function calculate() {
+        var id;//id книги
+        var amount; // кол-во книг
+        var price; // цена
+        var total; // общая цена книг по 1 id
+        var totalTotal=0; // вся сума товара в корзине
+        var cartObject={};
+        cartCount=0;
+        //выбираем все инпуты с корзины с количеством книг
+        // var inputs = $('#cart-list input[type=number]').each(function (item) {
+        //     console.log($(this).val());
+        // });
+
+        //второй вариант - input начинается с cart-item
+        var inputs = $('input[id^=cart-item]').each(function () {
+            id=$(this).attr("id").replace('cart-item-','');
+            amount=parseInt($(this).val());
+            price=parseFloat($('#price-'+id).text());
+            total=price*amount;
+            $('#result-'+id).text(total.toFixed(2));
+            totalTotal+=total;
+            cartCount +=amount;
+            //сохраняем значение id книги и их количество
+            cartObject[id]=amount;
+
+
+        });
+        $('#total').text(parseFloat(totalTotal.toFixed(2)));
+
+        return cartObject;
+    }
+
+    calculate();
+    $('#save-cart').click(function () {
+        $('#cart-count').text(cartCount);
+        var cartJson=JSON.stringify(calculate());
+        //отправляем пост запросом в сохранение корзины
+        $.post('/api/cart/save', {'cart': cartJson})
+            .done()
+            .fail()
+            .always(function (response) {
+                 console.log(response);
+            })
+        ;
+    });
+    $('[id^=cart-item]').on('input',function () {
+        calculate();
+
+    });
+
 
     $('.delete').click(function(e){
         e.preventDefault();

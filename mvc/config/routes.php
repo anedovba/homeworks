@@ -39,6 +39,7 @@ return  array(
 
     // api TODO 1. add methods 2. когда роут не найден и в url присутствует /api - выкинуть исключение которое созвучно с url (в этом случае ApiException)
     'api_save_feedback' => new Route('/api/feedback', 'API\\Site', 'saveFeedback'),
+    'api_save_cart' => new Route('/api/cart/save', 'API\\Cart', 'save'),
     'api_books_list' => new Route('/api/books', 'API\\Book', 'index'),
     'api_books_item' => new Route('/api/books{id}', 'API\\Book', 'item',array('id' => '[0-9]+')),
     'api_books_create' => new Route('/api/books', 'API\\Book', 'create'),

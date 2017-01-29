@@ -1,11 +1,32 @@
 <?php
 namespace Controller\API;
 use Library\Controller;
+use Library\FormatterFactory;
 use Library\Request;
+use Library\Response;
 use Model\Cart;
 
 class CartController extends Controller
 {
+   public  function saveAction(Request $request){
+       $format = $request->get('_format', 'json');
+       $formatter = FormatterFactory::create($format);
+
+       try{
+           $cartService=$this->container->get('cart_service');
+           $json=$request -> post('cart');
+           $cartService->updateJson($json);
+           $code=200;
+           $message="Saved";
+
+       } catch (\Exception $e){
+           $message=$e->getMessage();
+           $code=500;
+       }
+
+       $response = new Response($code, $message, $formatter);
+       return $response;
+   }
     public function addAction(Request $request)
     {
         // repo - check if exists & active

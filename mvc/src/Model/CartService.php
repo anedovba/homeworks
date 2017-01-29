@@ -34,6 +34,9 @@ class CartService
             Cookie::set('products', $cart);
         }
     }
+    public function updateJson($json){
+        Cookie::set('products', $json);
+    }
 
     public function addToCart(Book $book, $amount)
     {
