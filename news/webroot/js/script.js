@@ -104,83 +104,19 @@ $(".well").tooltip();
 
 
 
-    // var cartCount;
-    // // обрабатываем клик на кнопку  Add to cart
-    // $('a[id^=add-to-cart-btn-]').click(function (e) {
-    //     e.preventDefault();
-    //     var id=$(this).attr('id').replace('add-to-cart-btn-','');
-    //     $.get('/cart/add/'+id);
-    //     cartCount=parseInt($('#cart-count').text())+1;
-    //     $('#cart-count').text(cartCount);
-    // });
-    //
-    //
-    // //cart calculation
-    // function calculate() {
-    //     var id;//id книги
-    //     var amount; // кол-во книг
-    //     var price; // цена
-    //     var total; // общая цена книг по 1 id
-    //     var totalTotal=0; // вся сума товара в корзине
-    //     var cartObject={};
-    //     cartCount=0;
-    //     //выбираем все инпуты с корзины с количеством книг
-    //     // var inputs = $('#cart-list input[type=number]').each(function (item) {
-    //     //     console.log($(this).val());
-    //     // });
-    //
-    //     //второй вариант - input начинается с cart-item
-    //     var inputs = $('input[id^=cart-item]').each(function () {
-    //         id=$(this).attr("id").replace('cart-item-','');
-    //         amount=parseInt($(this).val());
-    //         price=parseFloat($('#price-'+id).text());
-    //         total=price*amount;
-    //         $('#result-'+id).text(total.toFixed(2));
-    //         totalTotal+=total;
-    //         cartCount +=amount;
-    //         //сохраняем значение id книги и их количество
-    //         cartObject[id]=amount;
-    //
-    //
-    //     });
-    //     $('#total').text(parseFloat(totalTotal.toFixed(2)));
-    //
-    //     return cartObject;
-    // }
-    //
-    // calculate();
-    // $('#save-cart').click(function () {
-    //     $('#cart-count').text(cartCount);
-    //     var cartJson=JSON.stringify(calculate());
-    //     //отправляем пост запросом в сохранение корзины
-    //     $.post('/api/cart/save', {'cart': cartJson})
-    //         .done()
-    //         .fail()
-    //         .always(function (response) {
-    //             console.log(response);
-    //         })
-    //     ;
-    // });
-    // $('[id^=cart-item]').on('input',function () {
-    //     calculate();
-    //
-    // });
-    //
-    //
-    // $('.delete').click(function(e){
-    //     e.preventDefault();
-    //     if(!confirm('Are you sure?')){
-    //         e.preventDefault();
-    //         return;
-    //     }
-    //     var deleteData=$(this).parent().parent().parent().first().children('td.bookId').text();
-    //     var hideElement=$(this).parent().parent().parent().first();
-    //
-    //     $.get('/admin/books/delete/'+deleteData)
-    //         .done(function () {
-    //             hideElement.fadeOut(500);
-    //         })
-    // });
+
+    $('.colorB').click(function(e){
+        e.preventDefault();
+
+            var color=$(this).attr('id');
+            console.log(color);
+            $.get('/admin/editcss/'+color)
+                .done(function () {
+                    $('.alert-box').html('<div class="alert alert-danger">color was changed</div>');
+                })
+
+
+    });
     // $('.title').on('click', function (){
     //
     //     // $('.description').toggle(500);

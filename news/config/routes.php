@@ -41,6 +41,7 @@ return  array(
     'admin_advert_edit' => new Route('/admin/advert/edit/{id}', 'Admin\\Advert', 'edit', array('id' => '[0-9]+')),
     'admin_advert_delete' => new Route('/admin/advert/delete/{id}', 'Admin\\Advert', 'delete', array('id' => '[0-9]+')),
     'admin_advert_add' => new Route('/admin/advert/edit/?', 'Admin\\Advert', 'add'),
-    'admin_edit_css' => new Route('//admin/editcss/?', 'Admin\\Advert', 'add')
+    'admin_edit_css' => new Route('/admin/editcss/?', 'Admin\\Css', 'edit'),
+    'admin_css_edit' => new Route('/admin/editcss/{id}', 'Admin\\Css', 'editb', array('id' => '[a-z0-9]+'))
 
 );
