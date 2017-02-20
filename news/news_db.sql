@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Час створення: Лют 13 2017 р., 12:29
+-- Час створення: Лют 21 2017 р., 00:45
 -- Версія сервера: 10.1.16-MariaDB
 -- Версія PHP: 5.6.24
 
@@ -118,6 +118,23 @@ INSERT INTO `comments` (`id`, `message`, `date`, `user_id`, `post_id`, `mark`, `
 (56, 'лілідф', '2017-02-12 21:31:49', 2, 9, 0, 13, 1),
 (58, 'Очень крутые', '2017-02-13 12:06:03', 4, 95, 0, NULL, 1),
 (59, 'Ага', '2017-02-13 12:06:47', 4, 95, 0, 58, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблиці `css`
+--
+
+CREATE TABLE `css` (
+  `background-color` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп даних таблиці `css`
+--
+
+INSERT INTO `css` (`background-color`) VALUES
+('white');
 
 -- --------------------------------------------------------
 
@@ -301,7 +318,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблиці `advert`
 --
 ALTER TABLE `advert`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT для таблиці `category`
 --
