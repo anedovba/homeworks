@@ -9,33 +9,16 @@ use Model\Category;
 class CssRepository extends EntityRepository
 {
 
-//    private function createAdvert($id, $name, $price, $company)
-//    {
-//        $advert=(new Advert())
-//            ->setId($id)
-//            ->setName($name)
-//            ->setPrice($price)
-//            ->setCompany($company)
-//        ;
-//        return $advert;
-//    }
-
 
     public function find(){
         $sth=$this->pdo->query("select * from css");
-
-
-        $row=$sth->fetch(\PDO::FETCH_ASSOC);
-
-        if(!$row)
-        {
-            throw new \Exception('not found');
+        $colors=[];
+        while ($row=$sth->fetch(\PDO::FETCH_ASSOC)){
+            $colors[]=$row['background-color'];
+            $colors[]=$row['nav-color'];
         }
+        return $colors;
 
-        if ($row){
-            $bcolor=$row['background-color'];
-        }
-        return $bcolor;
     }
 //
     //    public function save(Advert $advert, $table=null)
@@ -72,4 +55,7 @@ class CssRepository extends EntityRepository
          public function change($color){
              $this->pdo->query("UPDATE css SET `background-color`= '$color'");
          }
+    public function changeNav($color){
+        $this->pdo->query("UPDATE css SET `nav-color`= '$color'");
+    }
 }

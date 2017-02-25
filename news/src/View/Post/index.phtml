@@ -179,7 +179,26 @@
 <?php endforeach;?>
 <?php endif;?>
 
-<!--<script src="/../js/jquery.cookie.min.js"></script>-->
+<script>
+ var readNow = Math.floor((Math.random() * 5)+1);
+        var readTotal = parseInt($('#total-read').text());
+        $('#reading-now').text(readNow);
+
+        function saveViews() {
+
+            readTotal += readNow;
+            var id=$("#post-id").text();
+            var udateData=String(readTotal)+"_"+id;
+            $.get('/post/viewupdate/'+udateData);
+        }
+
+        setInterval(function(){
+            $('#total-read').text(readTotal);
+            readNow = Math.floor((Math.random() * 5)+1);
+            $('#reading-now').text(readNow);
+            saveViews();
+        }, 3000);
+</script>
 
 
 

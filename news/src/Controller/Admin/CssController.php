@@ -34,4 +34,21 @@ class CssController extends Controller
 
     }
 
+    public function editNavAction(Request $request)
+    {
+
+        //проверка что мы залогинены
+        if(!Session::has('admin')){
+            $this->container->get('router')->redirect('/login');
+        }
+        $color=$request->get('id');
+
+        $this
+            ->container
+            ->get('repository_manager')
+            ->getRepository('Css')
+            ->changeNav($color);
+
+    }
+
 }

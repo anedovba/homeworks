@@ -144,7 +144,7 @@ const BOOKS_PER_PAGE = 5;
 
         Session::setFlash("Comment \"{$comment->getMessage()}\" approved");
 
-        $this->pageReload('/admin/approve');
+        $this->pageReload('/admin/comment/approve');
 
     }
 

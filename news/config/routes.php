@@ -35,13 +35,14 @@ return  array(
     'admin_comment' => new Route('/admin/comment/?', 'Admin\\Comment', 'index'),
     'admin_comment_edit' => new Route('/admin/comment/edit/{id}', 'Admin\\Comment', 'edit', array('id' => '[0-9]+')),
     'admin_comment_delete' => new Route('/admin/comment/delete/{id}', 'Admin\\Comment', 'delete', array('id' => '[0-9]+')),
-    'admin_comment_approve_list' => new Route('/admin/approve/?', 'Admin\\Comment', 'approve'),
+    'admin_comment_approve_list' => new Route('/admin/comment/approve/?', 'Admin\\Comment', 'approve'),
     'admin_comment_approve' => new Route('/admin/approve/{id}', 'Admin\\Comment', 'check', array('id' => '[0-9]+')),
     'admin_advert' => new Route('/admin/advert/?', 'Admin\\Advert', 'index'),
     'admin_advert_edit' => new Route('/admin/advert/edit/{id}', 'Admin\\Advert', 'edit', array('id' => '[0-9]+')),
     'admin_advert_delete' => new Route('/admin/advert/delete/{id}', 'Admin\\Advert', 'delete', array('id' => '[0-9]+')),
     'admin_advert_add' => new Route('/admin/advert/edit/?', 'Admin\\Advert', 'add'),
     'admin_edit_css' => new Route('/admin/editcss/?', 'Admin\\Css', 'edit'),
-    'admin_css_edit' => new Route('/admin/editcss/{id}', 'Admin\\Css', 'editb', array('id' => '[a-z0-9]+'))
+    'admin_css_edit' => new Route('/admin/editcss/{id}', 'Admin\\Css', 'editb', array('id' => '[a-z0-9]+')),
+    'admin_css_editNav' => new Route('/admin/editcssnav/{id}', 'Admin\\Css', 'editNav', array('id' => '[a-z0-9]+'))
 
 );

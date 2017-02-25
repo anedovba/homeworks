@@ -105,7 +105,7 @@ body {
 }
 
 
-.colorB
+.colorB, .colorNav
 {
     width:30px;
     height:30px;
@@ -113,40 +113,45 @@ body {
     display: inline-block;
 }
 
-#purple
+#purple, #purpleNav
 {
     background-color: purple;
 }
 
-#lightblue
+#lightblue, #lightblueNav
 {
     background-color: lightblue;
 }
 
-#blue
+#blue, #blueNav
 {
     background-color: blue;
 }
-#yellow
+#yellow, #yellowNav
 {
     background-color: yellow;
 }
 
-#orange
+#orange, #orangeNav
 {
     background-color: orange;
 }
 
-#green
+#green, #greenNav
 {
     background-color: green;
 }
 
-#red
+#red, #redNav
 {
     background-color: red;
 }
 
-#white{
+#white, #whiteNav
+{
     border: 1px solid;
+}
+#default
+{
+    background-color: #222;
 }

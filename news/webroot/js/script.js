@@ -19,7 +19,7 @@ $(document).ready(function(){
                 $('#ad-'+id).css('font-size', originSize+'px').css('font-weight', originWeight).css({"color":originColor});
 
             });
-$(".well").tooltip();
+    $(".well").tooltip();
 
 
     };
@@ -29,24 +29,6 @@ $(".well").tooltip();
 
         // считаем и записваем читающих
 
-        var readNow = Math.floor((Math.random() * 5)+1);
-        var readTotal = parseInt($('#total-read').text());
-        $('#reading-now').text(readNow);
-
-        function saveViews() {
-
-            readTotal += readNow;
-            var id=$("#post-id").text();
-            var udateData=String(readTotal)+"_"+id;
-            $.get('/post/viewupdate/'+udateData);
-        }
-
-        setInterval(function(){
-            $('#total-read').text(readTotal);
-            readNow = Math.floor((Math.random() * 5)+1);
-            $('#reading-now').text(readNow);
-            saveViews();
-        }, 3000);
 
 //обработка закрытия окна
     function Unloader(){
@@ -102,7 +84,17 @@ $(".well").tooltip();
         $("#myCarousel2").carousel('next');
     });
 
+    $('.colorNav').click(function(e){
+        e.preventDefault();
+        var color=$(this).attr('id').replace('Nav','');
+        console.log(color);
+        $.get('/admin/editcssnav/'+color)
+            .done(function () {
+                $('.alert-box').html('<div class="alert alert-danger">color was changed</div>');
+            })
 
+
+    });
 
 
     $('.colorB').click(function(e){
