@@ -330,29 +330,46 @@ $(document).ready(function(){
             }, delay_popup);
         }
 
+    // $(function(){
+    //     $("#search").keyup(function(){
+    //         var search = $("#search").val();
+    //         $.ajax({
+    //             type: "POST",
+    //             url: "../models/Finder.php",
+    //             data: {"search": search},
+    //             cache: false,
+    //             success: function(response){
+    //                 $("#resSearch").html(response);
+    //             }
+    //         });
+    //         return false;
+    //     });
+    // });
+
+    $("#search").keyup(function(){
+
+        var formData, postParameters = {};
+        formData=$(this).serializeArray();
+
+        var obj;
+        for (key in formData){
+            obj=formData[key];
+            postParameters[obj.name]=obj.value;
+        }
+       console.log(postParameters);
+        $.post('/post/show', postParameters)
+            .done(function (response) {
+
+                console.log(response.message);
+                $("#resSearch").html(response.message); })
+            .fail()
+            .always( )
+        ;
+        // console.log(postParameters);
 
 
-    // $("#search").keyup(function(e){
-        //     var search = $("#search").val();
-        //     console.log(search);
-        //
-        //
-        //     $.post('/tag/show', {"search": search})
-        //         .done()
-        //         .fail()
-        //
-        //         .always(function (response) {
-        //             console.log(response);
-        //         })
-        //         // .always(
-        //         //     function (response) {
-        //         //         cosole.log(response);
-        //         //     // $("#resSearch").html(response);
-        //         // }
-        //         // )
-        //     ;
-        //
-        // });
+
+        });
 
 
 });

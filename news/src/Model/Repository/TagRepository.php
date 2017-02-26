@@ -35,27 +35,27 @@ class TagRepository extends EntityRepository
         return $posts;
     }
 
-    public function show($search){
+    public function search($word){
         $tags=[];
-        dump($search); die;
-        $sql=$this->pdo->query("SELECT tag FROM posts WHERE tag LIKE '%{$search}%'");
+
+        $sql=$this->pdo->query("SELECT tag FROM posts WHERE tag LIKE '%{$word}%'");
         if($sql->rowCount() > 0){
             $i = 0;
             $finds=[];
             while($row=$sql->fetch()){
-                $finds[$i]['tags']=explode(', ', $row['tags']);
+                $finds[$i]['tag']=explode(', ', $row['tag']);
                 $i++;
             }
             $tags_for_filter = [];
             foreach ($finds as $find) {
-                foreach ($find['tags'] as $find_tag){
+                foreach ($find['tag'] as $find_tag){
                     $tags_for_filter[]=$find_tag;
                 }
             }
             $tags_unique = array_unique($tags_for_filter);
             $arr_tags = [];
             foreach ($tags_unique as $item){
-                if(strpos($item, $search)!== false){
+                if(strpos($item, $word)!== false){
                     $arr_tags[]=$item;
                 }
             }

@@ -8,7 +8,7 @@ return  array(
     'category' => new Route('/category/{id}', 'Category', 'index', array('id' => '[0-9]+')),
     'post'=> new Route('/post/{id}', 'Post', 'index', array('id' => '[0-9]+')),
     'tag'=> new Route('/tag/{id}', 'Tag', 'index', array('id' => '.+')),
-    'tag_show' => new Route('/tag/show/?', 'Tag', 'show'),
+    'tag_show' => new Route('/post/show/?', 'Tag', 'show'),
     'post_views_update' => new Route('/post/viewupdate/{id}', 'Post', 'update', array('id' => '[0-9_]+')),
     'category_analitics' => new Route('/analitics/?', 'Category', 'analitics'),
     'comment' => new Route('/post/comment/?', 'Post', 'comment'),
