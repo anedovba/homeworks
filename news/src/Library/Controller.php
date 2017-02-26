@@ -1,7 +1,6 @@
 <?php
 namespace Library;
 
-use Model\Category;
 
 abstract class Controller{
 
@@ -60,17 +59,21 @@ abstract class Controller{
         return $advertService->findAll();
     }
 
-    public function getCartCount()
+    public function getCss()
     {
-        $cartService = $this->container->get('cart_service');
-        return $cartService->count();
+        $repos=$this->container->get('repository_manager')->getRepository('Css');
+        return $colors=$repos->find();
+
+    }
+    //вывод menu
+    function getMenu() {
+
+        $repos=$this->container->get('repository_manager')->getRepository('Menu');
+        return $repos->find();
+
     }
 
-    public function getCartJson()
-    {
-        $cartService = $this->container->get('cart_service');
-        return $cartService->getCartJson();
-    }
+
 
     public function setCookie(Cookie $cookie)
     {

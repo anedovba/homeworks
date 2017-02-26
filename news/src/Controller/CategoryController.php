@@ -43,7 +43,9 @@ class CategoryController extends Controller
         }
         $repos=$this->container->get('repository_manager')->getRepository('Post');
         $count = $repos->countAnalitics();
+
         $posts = $repos->findByAnalitics($page, self::BOOKS_PER_PAGE);
+
         if (!$posts && $count) {
             $this->container->get('router')->redirect('/');
         }

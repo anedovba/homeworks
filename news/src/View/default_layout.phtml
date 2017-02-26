@@ -29,9 +29,9 @@
 
 </head>
 
-<body style="background-color: <?=$bcolor?>">
+<body style="background-color: <?=$this->getCss()[0]?>">
 <?php //dump($this);?>
-<nav class="navbar navbar-inverse navbar-fixed-top " style="background-color: <?=$ncolor?>">
+<nav class="navbar navbar-inverse navbar-fixed-top " style="background-color: <?=$this->getCss()[1]?>">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -48,25 +48,36 @@
                 <li class="active"><a href="/">Новости</a></li>
                 <li class="active"><a href="/analitics">Аналитика</a></li>
                 <li class="active"><a href="/search">Поиск</a></li>
-
-                <li class="menu-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Навигация <span class="caret"></span></a>
+                <li class='menu-item dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'><?=$this->getMenu()[0][0]['title']?><span class='caret'></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Меню</a></li>
-                        <li><a href="#">Меню</a></li>
-                        <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Меню</a>
-                            <ul class="dropdown-menu">
-                                <li class="menu-item "><a href="#">Подменю</a></li>
-                                <li class="menu-item "><a href="#">Подменю</a></li>
-                                <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Подменю </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Подменю в квадрате</a></li>
-                                        <li><a href="#">Подменю в квадрате</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+                <?php
+                //вывод каталога с помощью рекурсии
+                function view_cat($arr,$parent_id = 1) {
+
+                    //Условия выхода из рекурсии
+                    if(empty($arr[$parent_id])) {
+                        return;
+                    }
+
+                    foreach ($arr[$parent_id] as $item){
+                       if(array_key_exists($item['id'], $arr)) {
+                           echo '<li class="menu-item dropdown dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">';echo "{$item['title']}";echo "<span class=\"caret\"></span></a> <ul class=\"dropdown-menu\">";
+                           view_cat($arr,$item['id']);
+                           echo ' </ul>';
+                       }
+                       else
+                        {
+                        echo '<li class="menu-item "><a href="#">'; echo "{$item['title']}";echo "</a></li>";}
+                        echo ' </li>';
+                        }
+                }
+                view_cat($this->getMenu());
+
+                echo '</ul>';
+                echo '</li>';
+                ?>
+
+
             </ul>
             <form class="navbar-form navbar-left" role="search" method="post" name="form" onsubmit="return false;">
                 <div class="form-group">
@@ -116,7 +127,10 @@
 
 </div>
 
+
+
 <div class="container col-md-8 pull-center" style="margin-top: 50px">
+
     <div class="starte4-template">
         <?php if(\Library\Session::has(\Library\Session::FLASH_KEY)):?>
         <div class="alert alert-info">

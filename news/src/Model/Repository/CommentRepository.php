@@ -1,7 +1,6 @@
 <?php
 namespace Model\Repository;
 
-//use Library\DbConnection;
 use Library\EntityRepository;
 use Model\Comment;
 

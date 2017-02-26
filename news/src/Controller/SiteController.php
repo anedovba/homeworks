@@ -31,12 +31,8 @@ class SiteController extends Controller {
             $topPosts[]=$repos->find($topId);
         }
         $posts = $repos->findAll();
-        $repos=$this->container->get('repository_manager')->getRepository('Css');
-        $colors=$repos->find();
-        $bcolor=$colors[0];
-        $ncolor=$colors[1];
 
-        $args=['categorys'=>$categorys, 'posts'=>$posts, 'topUsers'=>$users, 'topPosts'=>$topPosts, 'bcolor'=>$bcolor, 'ncolor'=>$ncolor];
+        $args=['categorys'=>$categorys, 'posts'=>$posts, 'topUsers'=>$users, 'topPosts'=>$topPosts];
 //        dump($args);die;
         return $this->render('index.phtml', $args);
 

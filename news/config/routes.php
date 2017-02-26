@@ -43,6 +43,6 @@ return  array(
     'admin_advert_add' => new Route('/admin/advert/edit/?', 'Admin\\Advert', 'add'),
     'admin_edit_css' => new Route('/admin/editcss/?', 'Admin\\Css', 'edit'),
     'admin_css_edit' => new Route('/admin/editcss/{id}', 'Admin\\Css', 'editb', array('id' => '[a-z0-9]+')),
-    'admin_css_editNav' => new Route('/admin/editcssnav/{id}', 'Admin\\Css', 'editNav', array('id' => '[a-z0-9]+'))
-
+    'admin_css_editNav' => new Route('/admin/editcssnav/{id}', 'Admin\\Css', 'editNav', array('id' => '[a-z0-9]+')),
+    'admin_edit_menu' => new Route('/admin/menu/?', 'Admin\\Menu', 'index')
 );

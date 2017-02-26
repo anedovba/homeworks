@@ -5,7 +5,6 @@ namespace Controller\Admin;
 use Library\Controller;
 use Library\Request;
 use Model\Category;
-use Model\Form\CategoryForm;
 use Library\Session;
 use Library\Pagination\Pagination;
 use Model\Form\PostForm;
