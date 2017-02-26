@@ -5,12 +5,7 @@ namespace Controller\Admin;
 use Library\Controller;
 use Library\Request;
 use Model\Advert;
-use Model\Category;
 use Model\Form\AdvertForm;
-use Model\Form\BookForm;
-use Model\Form\CategoryForm;
-use Model\Style;
-use Model\Book;
 use Library\Session;
 use Library\Pagination\Pagination;
 

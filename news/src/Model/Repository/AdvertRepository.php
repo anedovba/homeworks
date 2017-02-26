@@ -3,7 +3,6 @@ namespace Model\Repository;
 
 use Library\EntityRepository;
 use Model\Advert;
-use Model\Category;
 
 
 class AdvertRepository extends EntityRepository

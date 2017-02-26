@@ -44,5 +44,8 @@ return  array(
     'admin_edit_css' => new Route('/admin/editcss/?', 'Admin\\Css', 'edit'),
     'admin_css_edit' => new Route('/admin/editcss/{id}', 'Admin\\Css', 'editb', array('id' => '[a-z0-9]+')),
     'admin_css_editNav' => new Route('/admin/editcssnav/{id}', 'Admin\\Css', 'editNav', array('id' => '[a-z0-9]+')),
-    'admin_edit_menu' => new Route('/admin/menu/?', 'Admin\\Menu', 'index')
+    'admin_edit_menu' => new Route('/admin/menu/?', 'Admin\\Menu', 'index'),
+    'admin_menu_edit' => new Route('/admin/menu/edit/{id}', 'Admin\\Menu', 'edit', array('id' => '[0-9]+')),
+    'admin_menu_delete' => new Route('/admin/menu/delete/{id}', 'Admin\\Menu', 'delete', array('id' => '[0-9]+')),
+    'admin_menu_add' => new Route('/admin/menu/add/?', 'Admin\\Menu', 'add')
 );
